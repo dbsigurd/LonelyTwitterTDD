@@ -1,6 +1,8 @@
 package ca.ualberta.cs.lonelytwitter.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ca.ualberta.cs.lonelytwitter.AbstractTweet;
@@ -20,10 +22,13 @@ public class TweetListModel {
 	 * Appends the specified tweet to the end of this list. Throws
 	 * IllegalArgumentException if it is a repeated tweet.
 	 * 
-	 * @param tweet
+	 * @param string
 	 *            Tweet to be appended to this list
 	 */
 	public void addTweet(AbstractTweet tweet) {
+		if(hasTweet(tweet)){
+			throw new IllegalArgumentException("tweet exsist");
+		}
 		// TODO: Add only when it is not a duplicate
 		tweets.add(tweet);
 	}
@@ -34,8 +39,9 @@ public class TweetListModel {
 	 * @return the number of tweets in this list
 	 */
 	public int getCount() {
+		
 		// TODO: return real count
-		return 0;
+		return tweets.size();
 	}
 
 	/**
@@ -46,6 +52,9 @@ public class TweetListModel {
 	 * @return true if this list contains the specified element
 	 */
 	public boolean hasTweet(AbstractTweet tweet) {
+		if (tweets.contains(tweet)){
+			return(true);
+		}
 		// TODO: Find if the tweet already exists
 		return false;
 	}
@@ -57,7 +66,11 @@ public class TweetListModel {
 	 * @param tweet
 	 *            Tweet to be removed from this list, if present.
 	 */
+	public AbstractTweet getIndext(int i){
+		return tweets.get(i);
+	}
 	public void removeTweet(AbstractTweet tweet) {
+		tweets.remove(tweet);
 		// TODO: Remove tweet
 	}
 
@@ -69,8 +82,23 @@ public class TweetListModel {
 	 */
 	public AbstractTweet[] getTweets() {
 		// TODO: return sorted list of tweets
-		return null;
+		
+		
+		Collections.sort(tweets, new Comparator<AbstractTweet>(){
+			
+			//@Override
+			public int compare(AbstractTweet lhs, AbstractTweet rhs)
+			{
+
+				// TODO Auto-generated method stub
+				return lhs.getTweetDate().compareTo(rhs.getTweetDate());
+			
+			}
+			});
+				
+		return tweets.toArray(new AbstractTweet[getCount()]);
 	}
+	
 
 	/**
 	 * Returns the list of tweets.
